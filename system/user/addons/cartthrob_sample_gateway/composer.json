@@ -1,0 +1,14 @@
+{
+  "name": "vendor_name/cartthrob_sample_gateway",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "eric",
+      "email": "email@example.com"
+    }
+  ],
+  "require": {
+  }
+}
