@@ -5,10 +5,15 @@
   "license": "proprietary",
   "authors": [
     {
-      "name": "eric",
-      "email": "email@example.com"
+      "name": "CartThrob",
+      "email": "hello@cartthrob.com"
     }
   ],
+  "autoload": {
+    "classmap": [
+      "src/Cartthrob_sample_gateway.php"
+    ]
+  },
   "require": {
   }
 }
