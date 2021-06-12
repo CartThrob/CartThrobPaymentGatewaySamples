@@ -38,6 +38,62 @@ ee('cartthrob:PluginService')->register(Cartthrob_sample_gateway::class);
 ```
 
 ## A Complete Gateway Object
+
+If you need more complex logic, here's the complete Payment Gateway API:
+
+### Properties
+`title`Used in outputting what your Gateway is called; note that this is filtered through the Language file.
+
+`overview` A description displayed on the Gateway management page within CartThrob; note that this is filtered through the Language file.
+
+`settings` A multidimensional array to generate the Settings form within the CartThrob Control Panel.
+
+`fields` A simple array of the fields to output on the Checkout form when using the `{gateway_fields)` tag
+
+### Methods 
+
+`charge($creditCardNumber)` Handles processing the credit card number for payment
+
+`createToken($creditCardNumber)`For Payment Gateways that generate reusable Tokens, you'll wrap that up in this method.
+
+`refund($transactionId, $amount, $creditCardNumber)` Processes the refund with the Gateway
+
+`chargeToken($token, $customerId, $offsite)` Takes the provided Vault token and charges the amount stored in the `total()` method.
+
+### Complete Object
+```php 
+<?php
+class Cartthrob_sample_gateway extends Cartthrob_payment_gateway
+{
+    public $title = 'ct.payments.sample_gateway.title';
+
+    public $overview = 'ct.payments.sample_gateway.overview';
+
+    public $settings = [];
+
+    public $fields = [];
+
+    public function charge($creditCardNumber): \CartThrob\Transactions\TransactionState
+    {
+
+    }
+
+    public function refund($transactionId, $amount, $creditCardNumber): \CartThrob\Transactions\TransactionState
+    {
+
+    }
+
+    public function createToken($creditCardNumber): \CartThrob\Transactions\TransactionState|\Cartthrob_token
+    {
+
+    }
+
+    public function chargeToken($token, $customerId, $offsite): \CartThrob\Transactions\TransactionState
+    {
+
+    }
+}
+```
 The "fields" property outlines those fields displayed on the checkout page
 
 The "title" and "overview" properties are handled through the language filter. Be sure to include one in your gateway extension.
