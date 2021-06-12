@@ -104,7 +104,6 @@ If your Gateway requires custom settings and configuration, you use the `$settin
 Note that the format needs to match up with ExpressionEngine's form builder. 
 
 ```php
-<?php 
 $settings = [
      [
          'name' => 'ct.payments.sample_gateway.api.public_key',
@@ -151,7 +150,6 @@ The above will add a custom form onto the CartThrob Payments Settings page.
 This is just an array of field names to generate for your Checkout form when using the `{gateway_fields}` tag. 
 
 ```php 
-<?php
 $fields = [
      'first_name',
      'last_name',
