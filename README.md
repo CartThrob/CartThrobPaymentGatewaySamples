@@ -60,7 +60,10 @@ If you need more complex logic, here's the complete Payment Gateway API:
 
 `chargeToken($token, $customerId, $offsite)` Takes the provided Vault token and charges the amount stored in the `total()` method.
 
-### Complete Object
+### Complete Object Prototype
+
+Here's a simple example of everything's laid out. 
+
 ```php 
 <?php
 class Cartthrob_sample_gateway extends Cartthrob_payment_gateway
@@ -94,20 +97,79 @@ class Cartthrob_sample_gateway extends Cartthrob_payment_gateway
     }
 }
 ```
-The "fields" property outlines those fields displayed on the checkout page
+### The Settings Property 
 
-The "title" and "overview" properties are handled through the language filter. Be sure to include one in your gateway extension.
+If your Gateway requires custom settings and configuration, you use the `$settings` property to define the form. 
 
-You'll need 1 method in your Payment Gateway "charge" though you can have additional methods for additional functionality
-1. void (used to void payments)
-2. refund (to refund an order)
-3. createToken (to create reusable tokens for use in things like Subscriptions)
-4. chargeToken (the actual handling of taking a token and requesting money
+Note that the format needs to match up with ExpressionEngine's form builder. 
 
-Both the chargeToken and charge methods MUST return an instance of "CartThrob\Transactions\TransactionState"
+```php
+$settings = [
+     [
+         'name' => 'ct.payments.sample_gateway.api.public_key',
+         'short_name' => 'public_key',
+         'note' => 'ct.payments.sample_gateway.api.public_key.note',
+         'type' => 'text',
+         'default' => '',
+     ],
+     [
+         'name' => 'ct.payments.sample_gateway.api.private_key',
+         'short_name' => 'private_key',
+         'type' => 'text',
+         'default' => '',
+     ],
+     [
+         'name' => 'ct.payments.sample_gateway.api.sandbox.public_key',
+         'short_name' => 'sandbox_public_key',
+         'note' => 'ct.payments.sample_gateway.api.sandbox.public_key.note',
+         'type' => 'text',
+         'default' => '',
+     ],
+     [
+         'name' => 'ct.payments.sample_gateway.api.sandbox.private_key',
+         'short_name' => 'sandbox_private_key',
+         'type' => 'text',
+         'default' => '',
+     ],
+     [
+         'name' => 'ct.payments.sample_gateway.api.mode',
+         'short_name' => 'mode',
+         'type' => 'select',
+         'options' => [
+             'test' => 'sandbox',
+             'live' => 'live',
+         ],
+     ],
+ ];
+```
 
-You can have custom settings outlined in your object that display automagically in the CartThrob Control Panel.
+The above will add a custom form onto the CartThrob Payments Settings page. 
 
-In your extension to register your new Payment Gateway, you'll code like the below, registered on the "cartthrob_boot" hook:
-ee()->lang->load('cartthrob_custom_gateway_payment', $idiom = '', $return = false, $add_suffix = true, $alt_path = __DIR__ . '/');
-ee('cartthrob:PluginService')->register(Cartthrob_custom_gateway_payment::class);
+### The Fields Property
+
+This is just an array of field names to generate for your Checkout form when using the `{gateway_fields}` tag. 
+
+```php 
+$fields = [
+     'first_name',
+     'last_name',
+     'address',
+     'address2',
+     'city',
+     'state',
+     'zip',
+     'company',
+     'country_code',
+     'shipping_first_name',
+     'shipping_last_name',
+     'shipping_phone',
+     'shipping_address',
+     'shipping_address2',
+     'shipping_city',
+     'shipping_state',
+     'shipping_zip',
+     'shipping_country_code',
+     'phone',
+     'email_address',
+ ];
+```
