@@ -95,7 +95,7 @@ class Cartthrob_sample_gateway extends Cartthrob_payment_gateway
     public function charge($creditCardNumber): \CartThrob\Transactions\TransactionState
     {
         $state = new TransactionState();
-        $trans_id = uniqid('', true); //you'd want to use the return from the Remote Gateway
+        $trans_id = uniqid('sample_charge_', true); //you'd want to use the return from the Remote Gateway
         return $state->setAuthorized()->setTransactionId($trans_id);
     }
 
@@ -108,7 +108,8 @@ class Cartthrob_sample_gateway extends Cartthrob_payment_gateway
     public function refund($transactionId, $amount, $creditCardNumber): \CartThrob\Transactions\TransactionState
     {
         $state = new TransactionState();
-        return $state->setRefunded();
+        $token = uniqid('sample_refund_', true); //this would normally be the Token from the Gateway
+        return $state->setAuthorized()->setTransactionId($token);
     }
 
     /**
@@ -117,7 +118,7 @@ class Cartthrob_sample_gateway extends Cartthrob_payment_gateway
      */
     public function createToken($creditCardNumber): \Cartthrob_token
     {
-        $token = uniqid('', true); //this would normally be the Token from the Gateway
+        $token = uniqid('sample_token_', true); //this would normally be the Token from the Gateway
         return new Cartthrob_token(['token' => $token]);
     }
 
@@ -130,7 +131,7 @@ class Cartthrob_sample_gateway extends Cartthrob_payment_gateway
     public function chargeToken($token, $customerId, $offsite): \CartThrob\Transactions\TransactionState
     {
         $state = new TransactionState();
-        $trans_id = uniqid('', true); //you'd want to use the return from the Remote Gateway
+        $trans_id = uniqid('sample_token_charge_', true); //you'd want to use the return from the Remote Gateway
         return $state->setAuthorized()->setTransactionId($trans_id);
     }
 }
