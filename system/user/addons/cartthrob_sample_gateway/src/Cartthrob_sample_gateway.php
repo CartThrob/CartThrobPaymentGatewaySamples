@@ -1,5 +1,7 @@
 <?php
 
+use CartThrob\Transactions\TransactionState;
+
 class Cartthrob_sample_gateway extends Cartthrob_payment_gateway
 {
     /**
@@ -86,33 +88,49 @@ class Cartthrob_sample_gateway extends Cartthrob_payment_gateway
         'email_address',
     ];
 
+    /**
+     * @param $creditCardNumber
+     * @return TransactionState
+     */
     public function charge($creditCardNumber): \CartThrob\Transactions\TransactionState
     {
-
+        $state = new TransactionState();
+        $trans_id = uniqid('', true); //you'd want to use the return from the Remote Gateway
+        return $state->setAuthorized()->setTransactionId($trans_id);
     }
 
+    /**
+     * @param $transactionId
+     * @param $amount
+     * @param $creditCardNumber
+     * @return TransactionState
+     */
     public function refund($transactionId, $amount, $creditCardNumber): \CartThrob\Transactions\TransactionState
     {
-
+        $state = new TransactionState();
+        return $state->setRefunded();
     }
 
-    public function createToken($creditCardNumber): \CartThrob\Transactions\TransactionState|\Cartthrob_token
+    /**
+     * @param $creditCardNumber
+     * @return Cartthrob_token
+     */
+    public function createToken($creditCardNumber): \Cartthrob_token
     {
-
+        $token = uniqid('', true); //this would normally be the Token from the Gateway
+        return new Cartthrob_token(['token' => $token]);
     }
 
+    /**
+     * @param $token
+     * @param $customerId
+     * @param $offsite
+     * @return TransactionState
+     */
     public function chargeToken($token, $customerId, $offsite): \CartThrob\Transactions\TransactionState
     {
-
-    }
-
-    public function createRecurrentBilling($amount, $creditCardNumber, $subData): \CartThrob\Transactions\TransactionState
-    {
-
-    }
-
-    public function updateRecurrentBilling($id, $creditCardNumber): \CartThrob\Transactions\TransactionState
-    {
-
+        $state = new TransactionState();
+        $trans_id = uniqid('', true); //you'd want to use the return from the Remote Gateway
+        return $state->setAuthorized()->setTransactionId($trans_id);
     }
 }
