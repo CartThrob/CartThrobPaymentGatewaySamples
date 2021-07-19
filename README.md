@@ -11,7 +11,7 @@ Be sure to check out the Wiki for details about the internals of a [CartThrob Pa
 #### Develop
 This is our internal development branch for the repository. Nothing to see here, move along.
 
-### General
+### Master
 For pure custom solutions without any external requirements; implement however you want.
 
 ### Omnipay
