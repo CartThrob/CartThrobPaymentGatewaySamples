@@ -5,3 +5,20 @@ They're pretty simple at the core, by design, though depending on your use case 
 this repository contains multiple branches with different use cases and examples.
 
 Be sure to check out the Wiki for details about the internals of a [CartThrob Payment Gateway](https://github.com/CartThrob/CartThrobPaymentGatewaySamples/wiki). 
+
+### Branch Breakdown
+
+#### Develop
+This is our internal development branch for the repository. Nothing to see here, move along.
+
+### General
+For pure custom solutions without any external requirements; implement however you want.
+
+### Omnipay
+This example outlines how to use Omnipay within your custom Payment Gateway.
+
+### Offsite
+How to handle Payment Gateways that require users to verify their purchases offsite.
+
+### Embedded Form
+Adding custom form elements from remote payment gateways.
