@@ -86,7 +86,33 @@ class Cartthrob_sample_gateway extends Cartthrob_payment_gateway
         'shipping_country_code',
         'phone',
         'email_address',
+        'card_type',
+        'credit_card_number',
+        'CVV2',
+        'expiration_year',
+        'expiration_month',
     ];
+
+    public $nameless_fields = [
+        'card_type',
+        'credit_card_number',
+        'CVV2',
+        'expiration_year',
+        'expiration_month',
+    ];
+
+    public $required_fields = [
+        'card_type',
+        'credit_card_number',
+        'CVV2',
+        'expiration_year',
+        'expiration_month',
+        'email_address',
+    ];
+
+    public $embedded_fields = '';
+
+    public $hidden = '';
 
     /**
      * @param $creditCardNumber
