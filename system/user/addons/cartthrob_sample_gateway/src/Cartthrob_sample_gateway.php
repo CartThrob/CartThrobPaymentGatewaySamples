@@ -93,14 +93,18 @@ class Cartthrob_sample_gateway extends Cartthrob_payment_gateway
         'expiration_month',
     ];
 
-    public $nameless_fields = [
-        'card_type',
-        'credit_card_number',
-        'CVV2',
-        'expiration_year',
-        'expiration_month',
-    ];
+    /**
+     * If you want to have any of the above $fields displayed without
+     * names on the inputs put them here.
+     * @var array
+     */
+    public $nameless_fields = [];
 
+    /**
+     * Any of the $fields you want to be required by the form
+     *  Be sure to not try this with any $nameless_fields
+     * @var string[]
+     */
     public $required_fields = [
         'card_type',
         'credit_card_number',
@@ -110,9 +114,36 @@ class Cartthrob_sample_gateway extends Cartthrob_payment_gateway
         'email_address',
     ];
 
+    /**
+     * Any arbitrary HTML you want included at the bottom
+     *  of the form
+     * @var string
+     */
     public $embedded_fields = '';
 
-    public $hidden = '';
+    /**
+     * The hidden form fields you want to include in the HTML form
+     * @var string[]
+     */
+    public $hidden = [];
+
+    /**
+     * Custom per gateway
+     * @var bool
+     */
+    protected $publicKey;
+
+    /**
+     * Custom per gateway
+     * @var bool
+     */
+    protected $privateKey;
+
+    public function __construct()
+    {
+        $this->publicKey = ($this->plugin_settings('mode') === 'live') ? $this->plugin_settings('public_key') : $this->plugin_settings('sandbox_public_key');
+        $this->privateKey = ($this->plugin_settings('mode') === 'live') ? $this->plugin_settings('private_key') : $this->plugin_settings('sandbox_private_key');
+    }
 
     /**
      * @param $creditCardNumber
