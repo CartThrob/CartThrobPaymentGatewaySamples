@@ -1,6 +1,8 @@
 <?php
 
 use CartThrob\Transactions\TransactionState;
+use Omnipay\Dummy\Gateway as OmnipayGateway;
+use Omnipay\Omnipay;
 
 class Cartthrob_sample_gateway extends Cartthrob_payment_gateway
 {
@@ -93,14 +95,18 @@ class Cartthrob_sample_gateway extends Cartthrob_payment_gateway
         'expiration_month',
     ];
 
-    public $nameless_fields = [
-        'card_type',
-        'credit_card_number',
-        'CVV2',
-        'expiration_year',
-        'expiration_month',
-    ];
+    /**
+     * If you want to have any of the above $fields displayed without
+     * names on the inputs put them here.
+     * @var array
+     */
+    public $nameless_fields = [];
 
+    /**
+     * Any of the $fields you want to be required by the form
+     *  Be sure to not try this with any $nameless_fields
+     * @var string[]
+     */
     public $required_fields = [
         'card_type',
         'credit_card_number',
@@ -110,54 +116,85 @@ class Cartthrob_sample_gateway extends Cartthrob_payment_gateway
         'email_address',
     ];
 
+    /**
+     * Any arbitrary HTML you want included at the bottom
+     *  of the form
+     * @var string
+     */
     public $embedded_fields = '';
 
-    public $hidden = '';
+    /**
+     * The hidden form fields you want to include in the HTML form
+     * @var string[]
+     */
+    public $hidden = [];
 
     /**
-     * @param $creditCardNumber
+     * Custom per gateway
+     * @var bool
+     */
+    protected $publicKey;
+
+    /**
+     * Custom per gateway
+     * @var bool
+     */
+    protected $privateKey;
+
+    public function __construct()
+    {
+        $this->publicKey = ($this->plugin_settings('mode') === 'live') ? $this->plugin_settings('public_key') : $this->plugin_settings('sandbox_public_key');
+        $this->privateKey = ($this->plugin_settings('mode') === 'live') ? $this->plugin_settings('private_key') : $this->plugin_settings('sandbox_private_key');
+
+        $this->omnipayGateway = Omnipay::create('Dummy');
+        $this->omnipayGateway->initialize([]);
+    }
+
+    /**
+     * @param string $creditCardNumber
      * @return TransactionState
      */
-    public function charge($creditCardNumber): \CartThrob\Transactions\TransactionState
+    public function charge(string $creditCardNumber)
     {
-        $state = new TransactionState();
-        $trans_id = uniqid('sample_charge_', true); //you'd want to use the return from the Remote Gateway
-        return $state->setAuthorized()->setTransactionId($trans_id);
+        $params = [
+            'card' => [
+                'number' => $creditCardNumber,
+                'expiryMonth' => ee()->input->post('expiration_month'),
+                'expiryYear' => ee()->input->post('expiration_year'),
+            ],
+            'amount' => $this->total(),
+        ];
+
+        try {
+            $response = $this->omnipayGateway->purchase($params)->send();
+            if (!$response->isSuccessful()) {
+                return $this->fail($response->getMessage());
+            }
+
+            return $this->authorize($response->getTransactionReference());
+        } catch (\Exception $e) {
+            return $this->fail($e->getMessage());
+        }
     }
 
     /**
      * @param $transactionId
      * @param $amount
-     * @param $creditCardNumber
+     * @param $lastFour
      * @return TransactionState
      */
-    public function refund($transactionId, $amount, $creditCardNumber): \CartThrob\Transactions\TransactionState
+    public function refund($transactionId, $amount, $lastFour)
     {
-        $state = new TransactionState();
-        $token = uniqid('sample_refund_', true); //this would normally be the Token from the Gateway
-        return $state->setAuthorized()->setTransactionId($token);
-    }
+        try {
+            $response = $this->omnipayGateway->refund(['transactionReference' => $transactionId])->send();
 
-    /**
-     * @param $creditCardNumber
-     * @return Cartthrob_token
-     */
-    public function createToken($creditCardNumber): \Cartthrob_token
-    {
-        $token = uniqid('sample_token_', true); //this would normally be the Token from the Gateway
-        return new Cartthrob_token(['token' => $token]);
-    }
+            if (!$response->isSuccessful()) {
+                return $this->fail($response->getMessage());
+            }
 
-    /**
-     * @param $token
-     * @param $customerId
-     * @param $offsite
-     * @return TransactionState
-     */
-    public function chargeToken($token, $customerId, $offsite): \CartThrob\Transactions\TransactionState
-    {
-        $state = new TransactionState();
-        $trans_id = uniqid('sample_token_charge_', true); //you'd want to use the return from the Remote Gateway
-        return $state->setAuthorized()->setTransactionId($trans_id);
+            return $this->authorize($response->getTransactionReference());
+        } catch (\Exception $e) {
+            return $this->fail($e->getMessage());
+        }
     }
 }
