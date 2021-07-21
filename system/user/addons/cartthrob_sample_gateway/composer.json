@@ -1,8 +1,7 @@
 {
-  "name": "vendor_name/cartthrob_sample_gateway",
-  "description": "description",
+  "name": "cartthrob/cartthrob_sample_gateway",
+  "description": "Example of using Omnipay with your custom CartThrob Payment Gateway add-on.",
   "minimum-stability": "stable",
-  "license": "proprietary",
   "authors": [
     {
       "name": "CartThrob",
@@ -15,5 +14,6 @@
     ]
   },
   "require": {
+    "omnipay/dummy": "^3.0"
   }
 }
