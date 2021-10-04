@@ -147,12 +147,12 @@ class Cartthrob_sample_gateway extends Cartthrob_payment_gateway
 
     /**
      * @param $creditCardNumber
-     * @return TransactionState
      */
-    public function charge($creditCardNumber): \CartThrob\Transactions\TransactionState
+    public function charge($creditCardNumber): TransactionState
     {
         $state = new TransactionState();
         $trans_id = uniqid('sample_charge_', true); //you'd want to use the return from the Remote Gateway
+
         return $state->setAuthorized()->setTransactionId($trans_id);
     }
 
@@ -160,22 +160,22 @@ class Cartthrob_sample_gateway extends Cartthrob_payment_gateway
      * @param $transactionId
      * @param $amount
      * @param $creditCardNumber
-     * @return TransactionState
      */
-    public function refund($transactionId, $amount, $creditCardNumber): \CartThrob\Transactions\TransactionState
+    public function refund($transactionId, $amount, $creditCardNumber): TransactionState
     {
         $state = new TransactionState();
         $token = uniqid('sample_refund_', true); //this would normally be the Token from the Gateway
+
         return $state->setAuthorized()->setTransactionId($token);
     }
 
     /**
      * @param $creditCardNumber
-     * @return Cartthrob_token
      */
-    public function createToken($creditCardNumber): \Cartthrob_token
+    public function createToken($creditCardNumber): Cartthrob_token
     {
         $token = uniqid('sample_token_', true); //this would normally be the Token from the Gateway
+
         return new Cartthrob_token(['token' => $token]);
     }
 
@@ -183,12 +183,12 @@ class Cartthrob_sample_gateway extends Cartthrob_payment_gateway
      * @param $token
      * @param $customerId
      * @param $offsite
-     * @return TransactionState
      */
-    public function chargeToken($token, $customerId, $offsite): \CartThrob\Transactions\TransactionState
+    public function chargeToken($token, $customerId, $offsite): TransactionState
     {
         $state = new TransactionState();
         $trans_id = uniqid('sample_token_charge_', true); //you'd want to use the return from the Remote Gateway
+
         return $state->setAuthorized()->setTransactionId($trans_id);
     }
 }
