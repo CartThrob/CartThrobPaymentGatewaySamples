@@ -1,7 +1,6 @@
 <?php
 
 use CartThrob\Transactions\TransactionState;
-use Omnipay\Dummy\Gateway as OmnipayGateway;
 use Omnipay\Omnipay;
 
 class Cartthrob_sample_gateway extends Cartthrob_payment_gateway
@@ -151,7 +150,6 @@ class Cartthrob_sample_gateway extends Cartthrob_payment_gateway
     }
 
     /**
-     * @param string $creditCardNumber
      * @return TransactionState
      */
     public function charge(string $creditCardNumber)

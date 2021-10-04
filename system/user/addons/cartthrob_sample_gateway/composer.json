@@ -8,6 +8,9 @@
       "email": "hello@cartthrob.com"
     }
   ],
+  "replace": {
+    "omnipay/common": "*"
+  },
   "autoload": {
     "classmap": [
       "src/Cartthrob_sample_gateway.php"
