@@ -2,8 +2,9 @@
 
 use CartThrob\Transactions\TransactionState;
 use Omnipay\Omnipay;
+use CartThrob\PaymentGateways\AbstractPaymentGateway;
 
-class Cartthrob_sample_gateway extends Cartthrob_payment_gateway
+class Cartthrob_sample_gateway extends AbstractPaymentGateway
 {
     /**
      * This is the public name for your Gateway. It's displayed within the CartThrob Payments
@@ -99,7 +100,7 @@ class Cartthrob_sample_gateway extends Cartthrob_payment_gateway
      * names on the inputs put them here.
      * @var array
      */
-    public $nameless_fields = [];
+    public array $nameless_fields = [];
 
     /**
      * Any of the $fields you want to be required by the form
