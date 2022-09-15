@@ -8,6 +8,7 @@ class ComposerStaticInitc54fbda78fc43bb9f5a438e805f2e6e8
 {
     public static $classMap = array (
         'Cartthrob_sample_gateway' => __DIR__ . '/../..' . '/src/Cartthrob_sample_gateway.php',
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

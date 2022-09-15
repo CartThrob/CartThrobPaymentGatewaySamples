@@ -13,4 +13,5 @@ EOF
     'ct.payments.sample_gateway.api.sandbox.public_key.note' => 'If the Sandbox details are located elsewhere, here\'s a good spot for it. <a href="https://www.google.com/" target="_blank">place-to-get.com</a>',
     'ct.payments.sample_gateway.api.sandbox.private_key' => 'Sandbox API Private Key',
     'ct.payments.sample_gateway.api.mode' => 'Sandbox Mode?',
+    'Cartthrob_sample_gateway' => 'Sample Gateway',
 ];
